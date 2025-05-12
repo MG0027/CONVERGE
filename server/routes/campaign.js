@@ -1,4 +1,4 @@
-// server/routes/campaign.js
+
 import express from 'express';
 import CommunicationLog from '../models/communication.js';
 
@@ -6,13 +6,13 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    // 1) fetch and sort
+    
     const logs = await CommunicationLog
       .find({})
       .sort({ createdAt: -1 })
       .lean();
 
-    // 2) map to only the fields the UI needs
+    
     const campaigns = logs.map(log => {
       const total = log.deliveries.length;
       const sentCount = log.deliveries.filter(d => d.status === 'SENT').length;
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
         title: log.title,
         audience: total,
         createdAt: log.createdAt,
-        successRate,      // percent: 0–100
+        successRate,    
       };
     });
 

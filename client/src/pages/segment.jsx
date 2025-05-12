@@ -17,7 +17,7 @@ import ReactFlow, {
   Position,
 } from "reactflow";
 import "reactflow/dist/style.css";
-
+import { useNavigate } from 'react-router-dom';
 // Adjacency List builder
 function buildAdjList(nodes, edges) {
   const adj = {};
@@ -30,7 +30,7 @@ function buildAdjList(nodes, edges) {
   });
   return adj;
 }
-
+const navigate = useNavigate();
 // Recursively builds a linked tree avoiding cycles
 function buildLinkedTree(nodeId, nodesById, adj, parentId = null) {
   const node = nodesById[nodeId];
@@ -270,7 +270,7 @@ export default function SegmentFlow({ rules }) {
     const data = await res.json();
     alert(`Campaign "${data.title}" saved!`);
     setShowPreview(false);
-    window.location.href = "/campaign";
+    navigate("/campaign");
   };
 
   // Enhance nodes with callbacks for ReactFlow
