@@ -268,7 +268,7 @@ const navigate = useNavigate();
     const res = await fetch(`https://convergeb.onrender.com/api/segments/save`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: campaignTitle, segment }),
+      body: JSON.stringify({ title: campaignTitle, segment , count: matchCount}),
     });
     const data = await res.json();
     alert(`Campaign "${data.title}" saved!`);

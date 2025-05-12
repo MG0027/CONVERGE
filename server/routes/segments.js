@@ -122,10 +122,10 @@ router.get('/preview', async (req, res) => {
 // POST /save — saves log and populates deliveries based on nested segmen n
 router.post("/save", async (req, res) => {
   try {
-    const { title, segment } = req.body;
+    const { title, segment, count  } = req.body;
     const mongoFilte = buildMongoQueryFromChainedSegment(segment);
     
-    const count = await Customer.countDocuments(mongoFilte);
+   console.log(count);
     // 1) Save the log skeleton
     const log = await CommunicationLog.create({
       title,
