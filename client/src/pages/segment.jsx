@@ -30,7 +30,7 @@ function buildAdjList(nodes, edges) {
   });
   return adj;
 }
-const navigate = useNavigate();
+
 // Recursively builds a linked tree avoiding cycles
 function buildLinkedTree(nodeId, nodesById, adj, parentId = null) {
   const node = nodesById[nodeId];
@@ -180,7 +180,7 @@ export default function SegmentFlow({ rules }) {
   const [showPreview, setShowPreview] = useState(false);
   const [matchCount, setMatchCount] = useState(0);
   const [campaignTitle, setCampaignTitle] = useState("");
-
+const navigate = useNavigate();
   // delete handler
   const handleDeleteNode = useCallback((id) => {
     setNodes((nds) => nds.filter((n) => n.id !== id));
