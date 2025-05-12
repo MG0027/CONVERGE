@@ -28,7 +28,7 @@ function SortableRule({ rule, index, onChange, onRemove }) {
         ::
       </div>
 
-      {/* Field dropdown */}
+      
       <select
         value={rule.field}
         onChange={(e) => onChange(index, { ...rule, field: e.target.value })}
@@ -41,7 +41,7 @@ function SortableRule({ rule, index, onChange, onRemove }) {
         <option value="city">city</option>
       </select>
 
-      {/* Operator dropdown */}
+      
       <select
         value={rule.operator}
         onChange={(e) => onChange(index, { ...rule, operator: e.target.value })}
@@ -53,7 +53,7 @@ function SortableRule({ rule, index, onChange, onRemove }) {
         <option value="=">=</option>
       </select>
 
-      {/* Value text input */}
+      
       <Input
         placeholder="Value"
         value={rule.value}
@@ -85,7 +85,7 @@ export default function SegmentBuilder({ onRuleUpdate }) {
   const handleRuleChange = (index, updatedRule) => {
     setRules((prev) => prev.map((r, i) => (i === index ? updatedRule : r)));
     if (onRuleUpdate) {
-      onRuleUpdate(updatedRule); // Pass updated rule to parent (React Flow)
+      onRuleUpdate(updatedRule); 
     }
   };
 
@@ -97,7 +97,7 @@ export default function SegmentBuilder({ onRuleUpdate }) {
     const newRule = { id: Date.now().toString(), field: "", operator: "", value: "" };
     setRules((prev) => [...prev, newRule]);
     if (onRuleUpdate) {
-      onRuleUpdate(newRule); // Pass new rule to parent (React Flow)
+      onRuleUpdate(newRule);
     }
   };
 

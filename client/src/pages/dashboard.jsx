@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCampaigns } from "../store/campaignSlice"; // Make sure this path is correct
+import { fetchCampaigns } from "../store/campaignSlice";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Calendar, TrendingUp } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
@@ -11,16 +11,16 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Always fetch campaigns when component mounts
+   
     dispatch(fetchCampaigns());
   }, [dispatch]);
 
-  // Calculate total audience
+
   const totalAudience = campaigns.reduce((sum, campaign) => {
     return sum + (campaign.audience || 0);
   }, 0);
 
-  // Find the newest campaign
+ 
   const getNewestCampaign = () => {
     if (!campaigns || campaigns.length === 0) return null;
     
@@ -33,7 +33,7 @@ function Dashboard() {
 
   const newestCampaign = getNewestCampaign();
 
-  // Get the latest 5 campaigns sorted by date
+  
   const getLatestCampaigns = () => {
     if (!campaigns || campaigns.length === 0) return [];
     
@@ -41,23 +41,23 @@ function Dashboard() {
       .sort((a, b) => {
         const dateA = new Date(a.createdAt || a.date || 0);
         const dateB = new Date(b.createdAt || b.date || 0);
-        return dateB - dateA; // Sort descending (newest first)
+        return dateB - dateA; 
       })
-      .slice(0, 5); // Get only the first 5
+      .slice(0, 5);
   };
 
   const latestCampaigns = getLatestCampaigns();
   
-  // Format data for line chart
+  
   const chartData = latestCampaigns
     .map(campaign => ({
       name: campaign.title?.substring(0, 12) || 'Untitled',
       audience: campaign.audience || 0,
       date: new Date(campaign.createdAt || campaign.date || 0).toLocaleDateString()
     }))
-    .reverse(); // Reverse to show oldest to newest (left to right)
+    .reverse(); 
 
-  // Loading and error states
+  
   if (status === 'loading') {
     return <div className="m-10">Loading dashboard data...</div>;
   }
@@ -77,7 +77,7 @@ function Dashboard() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {/* Total Audience Card */}
+         
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
@@ -93,7 +93,7 @@ function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Latest Campaign Card */}
+        
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
@@ -138,7 +138,7 @@ function Dashboard() {
           </Card>
         </div>
 
-        {/* Audience Trend Area Chart */}
+        
         <Card className="mt-6">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">

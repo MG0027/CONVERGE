@@ -20,7 +20,7 @@ import "reactflow/dist/style.css";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { fetchCampaigns } from "@/store/campaignSlice";
-// Adjacency List builder
+
 function buildAdjList(nodes, edges) {
   const adj = {};
   nodes.forEach((n) => {
@@ -33,7 +33,7 @@ function buildAdjList(nodes, edges) {
   return adj;
 }
 
-// Recursively builds a linked tree avoiding cycles
+
 function buildLinkedTree(nodeId, nodesById, adj, parentId = null) {
   const node = nodesById[nodeId];
   if (!node || node.type !== "logic") return null;
@@ -96,7 +96,7 @@ function buildSegmentPayload(nodes, edges) {
   return buildLinkedTree(root.id, nodesById, adj);
 }
 
-// Node components with delete button
+
 const FilterNode = ({ data }) => {
   const { onChange, onDelete, field, operator, value } = data;
   const fieldOptions = ["totalSpend", "totalVisits", "gender"];
@@ -184,7 +184,7 @@ export default function SegmentFlow({ rules }) {
   const [campaignTitle, setCampaignTitle] = useState("");
   const dispatch = useDispatch();
 const navigate = useNavigate();
-  // delete handler
+  
   const handleDeleteNode = useCallback((id) => {
     setNodes((nds) => nds.filter((n) => n.id !== id));
     setEdges((eds) => eds.filter((e) => e.source !== id && e.target !== id));
@@ -265,7 +265,7 @@ const navigate = useNavigate();
     if (!campaignTitle) return alert("Please enter a campaign title.");
     const segment = buildSegmentPayload(nodes, edges);
     if (!segment) return;
-    console.log(matchCount);
+    
     const res = await fetch(`https://convergeb.onrender.com/api/segments/save`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -279,7 +279,7 @@ const navigate = useNavigate();
     navigate("/campaign");
   };
 
-  // Enhance nodes with callbacks for ReactFlow
+  
   const enhancedNodes = useMemo(
     () =>
       nodes.map((node) => ({

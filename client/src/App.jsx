@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import axios from "axios";
-import Dashboard from "./pages/dashboard";
-import Header from "./components/custom/header";
-import { AppSidebar } from "./components/custom/sidebar";
+import Dashboard from "./pages/Dashboard";
+import Header from "./components/custom/Header";
+import { AppSidebar } from "./components/custom/Sidebar";
 import Login from "./pages/Login";
-import SegmentFlow from "./pages/segment";
+import SegmentFlow from "./pages/Segment";
 import { SidebarTrigger } from "./components/ui/sidebar";
 import { signIn } from "./store/authSlice";
-import Campaign from "./pages/campaign";
+import Campaign from "./pages/Campaign";
 import { fetchCampaigns } from "./store/campaignSlice";
 
 function App() {
@@ -17,10 +17,10 @@ function App() {
   const isLoginPage = location.pathname === "/login";
   const dispatch = useDispatch();
   
-  // Get isLoggedIn state from Redux
+  
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   
-  // Add loading state while checking authentication
+  
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
@@ -37,26 +37,26 @@ function App() {
               Authorization: `Bearer ${token}`,
             },
           });
-          // Dispatch the user data to Redux
+         
           dispatch(signIn(res.data.user));
         } catch (err) {
           console.error("Token invalid or expired", err);
-          localStorage.removeItem("token"); // Remove invalid token
+          localStorage.removeItem("token"); 
         }
       }
-      // Mark authentication check as complete
+      
       setAuthChecked(true);
     };
     
     verifyUser();
   }, [dispatch]);
 
-  // Show loading state while checking authentication
+ 
   if (!authChecked) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  // Authentication has been checked, now we can safely render routes
+ 
   if (isLoginPage) {
     return (
       <div className="flex flex-col min-h-screen w-full">
@@ -68,7 +68,7 @@ function App() {
     );
   }
 
-  // If not logged in, redirect to login
+  
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
