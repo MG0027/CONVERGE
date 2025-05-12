@@ -123,11 +123,14 @@ router.get('/preview', async (req, res) => {
 router.post("/save", async (req, res) => {
   try {
     const { title, segment } = req.body;
-
+    const mongoFilte = buildMongoQueryFromChainedSegment(segment);
+    
+    const count = await Customer.countDocuments(mongoFilte);
     // 1) Save the log skeleton
     const log = await CommunicationLog.create({
       title,
       segment,
+      count,
       createdAt: new Date(),
       deliveries: []
     });

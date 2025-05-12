@@ -18,6 +18,8 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { fetchCampaigns } from "@/store/campaignSlice";
 // Adjacency List builder
 function buildAdjList(nodes, edges) {
   const adj = {};
@@ -180,6 +182,7 @@ export default function SegmentFlow({ rules }) {
   const [showPreview, setShowPreview] = useState(false);
   const [matchCount, setMatchCount] = useState(0);
   const [campaignTitle, setCampaignTitle] = useState("");
+  const dispatch = useDispatch();
 const navigate = useNavigate();
   // delete handler
   const handleDeleteNode = useCallback((id) => {
@@ -269,6 +272,7 @@ const navigate = useNavigate();
     });
     const data = await res.json();
     alert(`Campaign "${data.title}" saved!`);
+     dispatch(fetchCampaigns());
     setShowPreview(false);
     navigate("/campaign");
   };
