@@ -17,10 +17,11 @@ router.get('/', async (req, res) => {
       const total = log.deliveries.length;
       const sentCount = log.deliveries.filter(d => d.status === 'SENT').length;
       const successRate = total > 0 ? Math.round((sentCount / total) * 100) : 0;
+      console.log(log.count)
       return {
         id: log._id,
         title: log.title,
-        audience: total,
+        audience: log.count,
         createdAt: log.createdAt,
         successRate,    
       };
