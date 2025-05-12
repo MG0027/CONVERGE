@@ -1,4 +1,3 @@
-// server/routes/verify-token.js
 import express from "express";
 import { auth } from "../middleware/auth.js";
 import User from "../models/user.js";

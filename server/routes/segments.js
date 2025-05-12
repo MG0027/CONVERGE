@@ -5,54 +5,35 @@ import { chatSession } from "../configs/Aimodel.js";
 
 const router = express.Router();
 
-// Maps a single filter leaf to a Mongo predicate
-// const mapConditionToQuery = ({ field, operator, value }) => {
-//   switch (operator) {
-//     case "equals":
-//     case "=":
-//       return { [field]: value };
-//     case "contains":
-//       return { [field]: { $regex: value, $options: "i" } };
-//     case "greater_than":
-//     case ">":
-//       return { [field]: { $gt: Number(value) } };
-//     case "less_than":
-//     case "<":
-//       return { [field]: { $lt: Number(value) } };
-//     default:
-//       return {};
-//   }
-// };
 
 /**
- * Recursively converts a nested segment node into a MongoDB filter.
  * @param {{ logic: string, conditions: Array<object> }} node
- * @returns {object} MongoDB query fragment
+ * @returns {object} 
  */
 function buildMongoQuery(node) {
   if (!node || !Array.isArray(node.conditions)) {
     return {};
   }
 
-  // Transform each condition: either a leaf or a subtree
+
   const parts = node.conditions.map(cond => {
     if (cond.logic && Array.isArray(cond.conditions)) {
-      // subtree → recurse
+     
       return buildMongoQuery(cond);
     } else {
-      // leaf filter
+    
       return mapConditionToQuery(cond);
     }
   });
 
-  // Wrap in $and or $or
+  
   if (node.logic === "AND") {
     return { $and: parts };
   }
   if (node.logic === "OR") {
     return { $or: parts };
   }
-  // Fallback: treat as AND
+ 
   return { $and: parts };
 }
 
@@ -77,16 +58,16 @@ function mapConditionToQuery({ field, operator, value }) {
 function buildMongoQueryFromChainedSegment(node) {
   if (!node) return {};
 
-  // 1. Evaluate deepest `next` first
+  
   let resultQuery = null;
   if (node.next) {
     resultQuery = buildMongoQueryFromChainedSegment(node.next);
   }
 
-  // 2. Evaluate current filters
+
   const currentConditions = (node.filters || []).map(mapConditionToQuery);
 
-  // 3. Combine current with result of next
+  
   if (resultQuery) {
     const logic = node.logic === "OR" ? "$or" : "$and";
     return {
@@ -96,21 +77,21 @@ function buildMongoQueryFromChainedSegment(node) {
       ]
     };
   } else {
-    // Base case
+   
     if (currentConditions.length === 1) return currentConditions[0];
     return { [node.logic === "OR" ? "$or" : "$and"]: currentConditions };
   }
 }
 
-// GET /preview — works against Customer, returns co
+
 router.get('/preview', async (req, res) => {
   try {
-    console.log("Incoming segment:", req.query.segment);
+    
     const segment = JSON.parse(req.query.segment || "{}");
 
-    // Build our Mongo predicate
+    
    const mongoFilter = buildMongoQueryFromChainedSegment(segment);
-    console.log(mongoFilter);
+    
     const count = await Customer.countDocuments(mongoFilter);
     return res.json({ count });
   } catch (err) {
@@ -119,14 +100,14 @@ router.get('/preview', async (req, res) => {
   }
 });
 
-// POST /save — saves log and populates deliveries based on nested segmen n
+
 router.post("/save", async (req, res) => {
   try {
     const { title, segment, count  } = req.body;
     const mongoFilte = buildMongoQueryFromChainedSegment(segment);
     
-   console.log(count);
-    // 1) Save the log skeleton
+   
+
     const log = await CommunicationLog.create({
       title,
       segment,
@@ -135,10 +116,10 @@ router.post("/save", async (req, res) => {
       deliveries: []
     });
 
-    // 2) Build the Mongo query from the nested tree
+    
     const mongoFilter = buildMongoQuery(segment);
 
-    // 3) Find matching customers
+   
     const customers = await Customer.find(mongoFilter);
 
       const prompt = `
@@ -150,18 +131,18 @@ router.post("/save", async (req, res) => {
     const aiResult = await chatSession.sendMessage(prompt);
     let template = (await aiResult.response.text()).trim();
 
-    // 4) Create delivery entries
+    
     const deliveries = customers.map(c => ({
       customerId: c._id,
       status: 'PENDING',
        message: template.replace("{name}", c.name)
     }));
 
-    // 5) Attach and save
+    
     log.deliveries = deliveries;
     await log.save();
 
-    // 6) Fire off vendor calls
+    
     deliveries.forEach(delivery => {
       fetch("https://convergeb.onrender.com/api/vendor/send", {
         method: "POST",

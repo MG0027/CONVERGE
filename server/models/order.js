@@ -19,7 +19,6 @@ channel: {
   enum: ['web', 'mobile', 'store'],
   default: 'web'
 },
-//paymentStatus
 orderStatus: {
   type: String,
   enum: ['placed', 'delivered', 'cancelled'],
@@ -31,7 +30,6 @@ shippingAddress: {
   state: String,
   zip: String,
 },
-//delivery date
 orderDate: { type: Date, default: Date.now }
 }, { timestamps: true });
 

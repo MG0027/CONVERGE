@@ -16,36 +16,35 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Setup Redis client
+
 const redisClient = createClient({
   url: `redis://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
 });
 
 redisClient.on('error', (err) => {
-  console.error("⚠️ Redis connection error (non-blocking):", err.message);
-  // Don't throw or exit here
+  console.error(" Redis connection error (non-blocking):", err.message);
 });
 
 async function initServer() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ MongoDB connected");
+    console.log(" MongoDB connected");
 
     try {
       await redisClient.connect();
-      console.log("✅ Redis connected");
+      console.log("Redis connected");
 
-      // ✅ Import Redis-dependent modules only after successful Redis connection
+     
       await import('./services/orderSub.js');
     } catch (redisErr) {
-      console.warn("⚠️ Redis not available:", redisErr.message);
-      // Continue without Redis-based features
+      console.warn(" Redis not available:", redisErr.message);
+      
     }
 
     app.use(cors());
     app.use(express.json());
 
-    // Routes
+   
     app.use('/api/auth', authRoutes);
     app.use('/api/customer', customRoutes);
     app.use('/api/order', orderRoutes);
@@ -56,11 +55,11 @@ async function initServer() {
     app.use('/api/ai',aiRoutes);
     app.use('/api/campaigns', campaignRoutes)
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`Server running on http://localhost:${PORT}`);
     });
 
   } catch (err) {
-    console.error("❌ Failed to start server:", err.message);
+    console.error("Failed to start server:", err.message);
     process.exit(1);
   }
 }
