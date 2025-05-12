@@ -10,7 +10,7 @@ router.post("/send", async (req, res) => {
   const status = isSuccess ? "SENT" : "FAILED";
 
   // Simulate hitting the Delivery Receipt API
-  await fetch("http://localhost:5000/api/delivery/receipt", {
+  await fetch("https://convergeb.onrender.com/api/delivery/receipt", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ customerId, logId, status }),

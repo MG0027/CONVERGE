@@ -252,7 +252,7 @@ export default function SegmentFlow({ rules }) {
     const segment = buildSegmentPayload(nodes, edges);
     if (!segment) return;
     const params = new URLSearchParams({ segment: JSON.stringify(segment) });
-    const res = await fetch(`http://localhost:5000/api/segments/preview?${params}`);
+    const res = await fetch(`https://convergeb.onrender.com/api/segments/preview?${params}`);
     const data = await res.json();
     setMatchCount(data.count);
     setShowPreview(true);
@@ -262,7 +262,7 @@ export default function SegmentFlow({ rules }) {
     if (!campaignTitle) return alert("Please enter a campaign title.");
     const segment = buildSegmentPayload(nodes, edges);
     if (!segment) return;
-    const res = await fetch(`http://localhost:5000/api/segments/save`, {
+    const res = await fetch(`https://convergeb.onrender.com/api/segments/save`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: campaignTitle, segment }),

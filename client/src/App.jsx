@@ -32,7 +32,7 @@ function App() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await axios.get("http://localhost:5000/api/verify-token", {
+          const res = await axios.get("https://convergeb.onrender.com/api/verify-token", {
             headers: {
               Authorization: `Bearer ${token}`,
             },

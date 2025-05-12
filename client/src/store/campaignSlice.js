@@ -4,7 +4,7 @@
   export const fetchCampaigns = createAsyncThunk(
     'campaigns/fetchAll',
     async () => {
-      const response = await axios.get('http://localhost:5000/api/campaigns');
+      const response = await axios.get('https://convergeb.onrender.com/api/campaigns');
       return response.data;
     }
   );

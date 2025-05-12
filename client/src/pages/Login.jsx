@@ -37,7 +37,7 @@ function Login() {
           }
         );
 
-        const res = await axios.post("http://localhost:5000/api/auth", {
+        const res = await axios.post("https://convergeb.onrender.com/api/auth", {
           email: userInfo.data.email,
           name: userInfo.data.name,
           picture: userInfo.data.picture,

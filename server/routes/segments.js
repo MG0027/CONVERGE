@@ -160,7 +160,7 @@ router.post("/save", async (req, res) => {
 
     // 6) Fire off vendor calls
     deliveries.forEach(delivery => {
-      fetch("http://localhost:5000/api/vendor/send", {
+      fetch("https://convergeb.onrender.com/api/vendor/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
