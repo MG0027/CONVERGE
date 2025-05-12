@@ -36,6 +36,7 @@ export default function Campaign() {
          <TableBody>
   {campaigns.map(cam => {
     const isGood = cam.successRate > 50;
+    console.log(cam.audience)
     return (
       <TableRow key={cam.id}>
         <TableCell className="">{cam.title}</TableCell>

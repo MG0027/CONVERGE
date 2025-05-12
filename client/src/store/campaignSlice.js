@@ -5,6 +5,7 @@
     'campaigns/fetchAll',
     async () => {
       const response = await axios.get('https://convergeb.onrender.com/api/campaigns');
+      console.log(response.data)
       return response.data;
     }
   );
