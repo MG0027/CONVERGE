@@ -265,9 +265,11 @@ const navigate = useNavigate();
     if (!campaignTitle) return alert("Please enter a campaign title.");
     const segment = buildSegmentPayload(nodes, edges);
     if (!segment) return;
+    console.log(matchCount);
     const res = await fetch(`https://convergeb.onrender.com/api/segments/save`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      
       body: JSON.stringify({ title: campaignTitle, segment , count: matchCount}),
     });
     const data = await res.json();
